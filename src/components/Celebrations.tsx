@@ -40,7 +40,7 @@ export default function Celebrations({ onCheckAvailability }: CelebrationsProps)
       <div className="container">
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
           gap: '48px',
           alignItems: 'center',
         }}>
@@ -73,7 +73,7 @@ export default function Celebrations({ onCheckAvailability }: CelebrationsProps)
 
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
               gap: '16px',
               marginBottom: '28px',
             }}>

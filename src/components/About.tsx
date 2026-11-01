@@ -35,7 +35,7 @@ export default function About() {
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
           gap: '52px',
           alignItems: 'center',
         }}>
@@ -44,8 +44,8 @@ export default function About() {
             {/* Playful Floating Badges */}
             <div style={{
               position: 'absolute',
-              top: '-16px',
-              left: '-12px',
+              top: '-14px',
+              left: '12px',
               zIndex: 3,
               backgroundColor: '#ffffff',
               border: '1.5px solid var(--border-playful)',
@@ -83,10 +83,11 @@ export default function About() {
             {/* Floating Exclusive Card */}
             <div style={{
               position: 'absolute',
-              bottom: '-24px',
-              right: '-10px',
+              bottom: '-20px',
+              right: '12px',
+              maxWidth: 'calc(100% - 24px)',
               backgroundColor: '#ffffff',
-              padding: '18px 24px',
+              padding: '16px 20px',
               borderRadius: '24px',
               boxShadow: 'var(--shadow-hover)',
               border: '1.5px solid var(--border-light)',
@@ -158,7 +159,7 @@ export default function About() {
             {/* Highlights List */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
               gap: '12px',
               marginBottom: '32px',
             }}>

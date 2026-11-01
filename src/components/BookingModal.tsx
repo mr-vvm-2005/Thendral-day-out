@@ -127,6 +127,9 @@ export default function BookingModal({ isOpen, onClose, initialDate }: BookingMo
           borderRadius: '32px',
           maxWidth: '560px',
           width: '100%',
+          maxHeight: 'min(92vh, 840px)',
+          display: 'flex',
+          flexDirection: 'column',
           overflow: 'hidden',
           boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.4)',
           position: 'relative',
@@ -185,7 +188,7 @@ export default function BookingModal({ isOpen, onClose, initialDate }: BookingMo
 
         {submittedBooking ? (
           /* Confirmation Screen */
-          <div style={{ padding: '32px 28px' }}>
+          <div style={{ padding: 'clamp(20px, 4vw, 32px) clamp(16px, 4vw, 28px)', overflowY: 'auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '24px' }}>
               <div style={{
                 width: '72px',
@@ -299,7 +302,7 @@ export default function BookingModal({ isOpen, onClose, initialDate }: BookingMo
           </div>
         ) : (
           /* Form Screen */
-          <form onSubmit={handleSubmit} style={{ padding: '28px' }}>
+          <form onSubmit={handleSubmit} style={{ padding: 'clamp(18px, 4vw, 28px)', overflowY: 'auto' }}>
             {/* Price Pill banner */}
             <div style={{
               backgroundColor: '#fef2f2',

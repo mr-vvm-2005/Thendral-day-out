@@ -36,15 +36,16 @@ export default function Header({ onOpenBooking }: HeaderProps) {
       <div style={{
         background: 'linear-gradient(90deg, #dc2626 0%, #0369a1 100%)',
         color: '#ffffff',
-        padding: '6px 16px',
+        padding: '6px 12px',
         textAlign: 'center',
-        fontSize: '0.84rem',
+        fontSize: '0.82rem',
         fontWeight: 700,
         fontFamily: 'Fredoka, sans-serif',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '10px',
+        flexWrap: 'wrap',
+        gap: '8px',
         letterSpacing: '0.03em',
       }}>
         <span>🔥 SPECIAL OFFER IS GOING ON NOW: <s style={{ opacity: 0.8, textDecorationColor: '#fecaca', margin: '0 4px' }}>₹5,000</s> <strong style={{ color: '#fef08a', fontSize: '0.92rem' }}>₹3,000 / FULL DAY</strong> — BOOK NOW!</span>
@@ -102,7 +103,7 @@ export default function Header({ onOpenBooking }: HeaderProps) {
             <div style={{
               fontFamily: 'Fredoka, Outfit, sans-serif',
               fontWeight: 800,
-              fontSize: '1.45rem',
+              fontSize: 'clamp(1.1rem, 3.8vw, 1.45rem)',
               color: 'var(--primary-blue-dark)',
               letterSpacing: '-0.01em',
               lineHeight: 1.1,

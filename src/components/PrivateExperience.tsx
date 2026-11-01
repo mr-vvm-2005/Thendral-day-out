@@ -86,7 +86,7 @@ export default function PrivateExperience({ onCheckDate }: PrivateExperienceProp
           {/* Perks Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
             gap: '14px',
             maxWidth: '820px',
             margin: '0 auto 40px auto',
@@ -131,11 +131,13 @@ export default function PrivateExperience({ onCheckDate }: PrivateExperienceProp
           <div style={{
             display: 'inline-block',
             backgroundColor: '#ffffff',
-            padding: '24px 44px',
+            padding: 'clamp(18px, 4vw, 24px) clamp(16px, 4vw, 44px)',
             borderRadius: '32px',
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
             border: '4px solid #f59e0b',
             marginBottom: '36px',
+            maxWidth: '100%',
+            boxSizing: 'border-box',
           }}>
             <div style={{
               display: 'inline-flex',

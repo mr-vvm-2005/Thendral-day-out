@@ -311,7 +311,7 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
 
   ctx.fillStyle = '#0284c7';
   ctx.font = '600 15px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('GPS: https://maps.app.goo.gl/SoSykGNBFHepynWr9', 540, addressY + 98);
+  ctx.fillText('GPS: 9.018484, 77.261947 (Panpoli)', 540, addressY + 98);
 
   // Bottom Security Footer
   const footerY = 1220;

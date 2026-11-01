@@ -24,8 +24,21 @@ async function runTests() {
     assert(homeHtml.includes('8778038383'), 'Homepage has phone 8778038383');
     assert(homeHtml.includes('site-studio-in.netlify.app'), 'Homepage has MR.VVM designer credit link');
     assert(homeHtml.includes('Near Panpoli Thaika Bus Stop'), 'Homepage has verified address');
+    assert(homeHtml.includes('fWRteDfwIDh9Wxw_8wfTTsSnOL2NOfo2k26qEGtfjUA'), 'Homepage contains Google site verification meta tag');
+    assert(homeHtml.includes('name="viewport"'), 'Homepage contains mobile responsive viewport meta tag');
+    assert(homeHtml.includes('destination=9.0184843,77.261947'), 'Homepage contains direct navigation coordinates to Google Maps');
   } catch (e) {
     assert(false, `Homepage test error: ${e.message}`);
+  }
+
+  // 1b. Test Google Verification HTML File
+  try {
+    const gRes = await fetch('http://localhost:3000/googled12f3056cb678473.html');
+    const gText = await gRes.text();
+    assert(gRes.status === 200, 'Google HTML verification file returns 200 OK without redirect');
+    assert(gText.includes('google-site-verification: googled12f3056cb678473.html'), 'Google verification file content matches Google requirements');
+  } catch (e) {
+    assert(false, `Google verification file test error: ${e.message}`);
   }
 
   // 2. Test Availability API

@@ -25,12 +25,12 @@ export default function StickyMobileBar({ onCheckAvailability, onBookNow }: Stic
         backgroundColor: 'rgba(255, 255, 255, 0.98)',
         backdropFilter: 'blur(12px)',
         borderTop: '1px solid var(--border-light)',
-        padding: '10px 14px',
+        padding: '8px clamp(6px, 2vw, 12px)',
         boxShadow: '0 -4px 16px rgba(12, 74, 110, 0.08)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '8px',
+        gap: 'clamp(4px, 1.5vw, 8px)',
       }}
     >
       <a

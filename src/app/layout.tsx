@@ -1,5 +1,12 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#0284c7',
+};
 
 export const metadata: Metadata = {
   title: 'Thendral Day Out | Private Day Out & Swimming Pool in Tenkasi',
@@ -88,7 +95,7 @@ export default function RootLayout({
       latitude: 9.0184843,
       longitude: 77.261947,
     },
-    hasMap: 'https://maps.app.goo.gl/SoSykGNBFHepynWr9',
+    hasMap: 'https://www.google.com/maps/dir/?api=1&destination=9.0184843,77.261947',
   };
 
   const webSiteSchema = {

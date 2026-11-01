@@ -286,7 +286,7 @@ export default function TicketPage() {
             {/* Customer & Booking Details Grid */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
               gap: '24px',
               marginBottom: '32px',
             }}>
@@ -381,7 +381,7 @@ export default function TicketPage() {
               </div>
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
                 gap: '8px',
               }}>
                 {ticketData.facilities?.map((f: string, idx: number) => (
@@ -419,7 +419,7 @@ export default function TicketPage() {
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
                 <a
-                  href="https://maps.app.goo.gl/SoSykGNBFHepynWr9"
+                  href="https://www.google.com/maps/dir/?api=1&destination=9.0184843,77.261947"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline btn-sm no-print"

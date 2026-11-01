@@ -4,7 +4,7 @@ import React from 'react';
 import { MapPin, Phone, MessageCircle, Navigation, Clock, Sparkles } from 'lucide-react';
 
 export default function LocationSection() {
-  const googleMapsUrl = 'https://maps.app.goo.gl/SoSykGNBFHepynWr9';
+  const googleMapsUrl = 'https://www.google.com/maps/dir/?api=1&destination=9.0184843,77.261947';
   const whatsappUrl =
     'https://wa.me/918778038383?text=' +
     encodeURIComponent('Hello Thendral Day Out, I would like to get directions and check availability for a day out.');
@@ -30,7 +30,7 @@ export default function LocationSection() {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
           gap: '36px',
           alignItems: 'stretch',
         }}>
@@ -38,7 +38,7 @@ export default function LocationSection() {
           <div style={{
             backgroundColor: '#ffffff',
             borderRadius: '32px',
-            padding: '40px 32px',
+            padding: 'clamp(24px, 5vw, 40px) clamp(18px, 4vw, 32px)',
             border: '1.5px solid var(--border-light)',
             boxShadow: 'var(--shadow-sm)',
             display: 'flex',
@@ -167,11 +167,11 @@ export default function LocationSection() {
                 <span>📍 GET DIRECTIONS</span>
               </a>
 
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                 <a
                   href="tel:8778038383"
                   className="btn btn-secondary"
-                  style={{ flex: 1 }}
+                  style={{ flex: '1 1 180px', minWidth: '140px' }}
                 >
                   <Phone size={18} />
                   <span>CALL 8778038383</span>
@@ -182,7 +182,7 @@ export default function LocationSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-whatsapp"
-                  style={{ flex: 1 }}
+                  style={{ flex: '1 1 180px', minWidth: '140px' }}
                 >
                   <MessageCircle size={18} />
                   <span>WHATSAPP US</span>
@@ -198,15 +198,15 @@ export default function LocationSection() {
             border: '1.5px solid var(--border-light)',
             boxShadow: 'var(--shadow-sm)',
             position: 'relative',
-            minHeight: '400px',
+            minHeight: '360px',
             backgroundColor: '#e2e8f0',
           }}>
             <iframe
               title="Thendral Day Out Location Panpoli Tenkasi"
-              src="https://maps.google.com/maps?q=9.0184843,77.261947(Thendral%20Day%20Out)&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              src="https://maps.google.com/maps?q=9.0184843,77.261947&z=15&output=embed"
               width="100%"
               height="100%"
-              style={{ border: 0, minHeight: '400px' }}
+              style={{ border: 0, minHeight: '360px', width: '100%', display: 'block' }}
               allowFullScreen={false}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

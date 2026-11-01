@@ -113,7 +113,7 @@ export default function AvailabilitySection({ onSelectDate }: AvailabilitySectio
           borderRadius: '32px',
           border: '1.5px solid var(--border-light)',
           boxShadow: 'var(--shadow-md)',
-          padding: '32px 24px',
+          padding: 'clamp(18px, 4vw, 32px) clamp(12px, 3vw, 24px)',
         }}>
           {/* Calendar Header with Navigation */}
           <div style={{
