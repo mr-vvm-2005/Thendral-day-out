@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": "user_admin_1",
+      "username": "thendraldayouttenkasi@gmail.com",
+      "email": "thendraldayouttenkasi@gmail.com",
+      "password_hash": "e1284b65dc45b469175d520aae796f1e:592b9b2e75261a4c5f6487b94ae6e2521403c57ab12e2b997c671b7b68f13dd5af776df57f649ff5a04b6d1db85cac11e0f9517ac83f8fb8c71576624392cef2",
+      "role": "admin",
+      "created_at": "2026-11-01T11:29:36.981Z",
+      "updated_at": "2026-11-01T11:29:36.981Z"
+    }
+  ],
+  "customers": [
+    {
+      "id": "cust_1793547357979_9szb",
+      "name": "Test Delete Customer",
+      "phone": "9876543210",
+      "total_bookings": 0,
+      "total_spent": 0,
+      "created_at": "2026-11-01T15:35:57.979Z",
+      "updated_at": "2026-11-01T15:36:23.553Z"
+    },
+    {
+      "id": "cust_1793547399916_60ko",
+      "name": "Murugan V",
+      "phone": "9840998877",
+      "total_bookings": 0,
+      "total_spent": 0,
+      "created_at": "2026-11-01T15:36:39.916Z",
+      "updated_at": "2026-11-01T15:40:32.825Z"
+    },
+    {
+      "id": "cust_1793547399925_5e6b",
+      "name": "Confirmed Tester",
+      "phone": "9840112233",
+      "total_bookings": 0,
+      "total_spent": 0,
+      "created_at": "2026-11-01T15:36:39.925Z",
+      "updated_at": "2026-11-01T15:40:30.057Z"
+    }
+  ],
+  "bookings": [],
+  "settings": {
+    "business_name": "THENDRAL DAY OUT",
+    "parent_brand": "by THENDRAL GROUPS",
+    "tagline": "Swim • Play • Celebrate • Make Memories",
+    "phone": "8778038383",
+    "location": "Near Panpoli Thaika Bus Stop, Panpoli, Tenkasi, Tamil Nadu",
+    "price": 3000,
+    "upi_id": "8778038383@upi",
+    "check_in_time": "09:00 AM",
+    "check_out_time": "06:00 PM",
+    "cancellation_policy": "Please contact the team directly at 8778038383 for any cancellation or rescheduling requests. Cancellations are handled subject to administrative review.",
+    "rules_summary": "Venue is booked exclusively for full day. Outside prepared food permitted. Maintain pool safety and children supervision at all times."
+  }
+}
