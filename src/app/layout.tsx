@@ -53,10 +53,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   verification: {
-    google: [
-      'fWRteDfwIDh9Wxw_8wfTTsSnOL2NOfo2k26qEGtfjUA',
-      'G2S0SfkA7BuxSPYH2EM6Qi5FglhdYOTvlNrTnqiy_GQ',
-    ],
+    google: 'fWRteDfwIDh9Wxw_8wfTTsSnOL2NOfo2k26qEGtfjUA',
   },
 };
 
@@ -164,6 +161,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="google-site-verification" content="fWRteDfwIDh9Wxw_8wfTTsSnOL2NOfo2k26qEGtfjUA" />
         <link rel="icon" href="/images/logo.png" />
         <script
           type="application/ld+json"
