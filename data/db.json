@@ -37,9 +37,54 @@
       "total_spent": 0,
       "created_at": "2026-11-01T15:36:39.925Z",
       "updated_at": "2026-11-01T15:40:30.057Z"
+    },
+    {
+      "id": "cust_1793551119842_v6yb",
+      "name": "suresh",
+      "phone": "8925441239",
+      "total_bookings": 1,
+      "total_spent": 3000,
+      "created_at": "2026-11-01T16:38:39.847Z",
+      "updated_at": "2026-11-01T16:40:30.144Z"
     }
   ],
-  "bookings": [],
+  "bookings": [
+    {
+      "id": "bk_1793551119862_wk8s",
+      "booking_id": "TDO-261103-001",
+      "customer_id": "cust_1793551119842_v6yb",
+      "customer_name": "suresh",
+      "customer_phone": "8925441239",
+      "booking_date": "2026-11-03",
+      "booking_type": "Private Full-Day Booking",
+      "amount": 3000,
+      "payment_status": "PENDING",
+      "payment_method": "UPI",
+      "booking_status": "PENDING",
+      "notes": "birthday",
+      "secure_token": "b1436fad0f57f8c3355e36960d90ae89e7b4efc0b928433b",
+      "created_at": "2026-11-01T16:38:39.862Z",
+      "updated_at": "2026-11-01T16:38:39.863Z"
+    },
+    {
+      "id": "bk_1793551230145_th6o",
+      "booking_id": "TDO-261102-001",
+      "customer_id": "cust_1793551119842_v6yb",
+      "customer_name": "suresh",
+      "customer_phone": "8925441239",
+      "booking_date": "2026-11-02",
+      "booking_type": "Private Full-Day Booking",
+      "amount": 3000,
+      "payment_status": "PAID",
+      "payment_method": "UPI",
+      "payment_reference": "upi",
+      "booking_status": "CONFIRMED",
+      "notes": "",
+      "secure_token": "225e3f5f4e8a48928d855603a7b795920c66092d4cd0ed45",
+      "created_at": "2026-11-01T16:40:30.145Z",
+      "updated_at": "2026-11-01T16:40:30.145Z"
+    }
+  ],
   "settings": {
     "business_name": "THENDRAL DAY OUT",
     "parent_brand": "by THENDRAL GROUPS",
