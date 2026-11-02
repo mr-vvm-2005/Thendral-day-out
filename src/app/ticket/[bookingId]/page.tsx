@@ -419,7 +419,7 @@ export default function TicketPage() {
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
                 <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=9.0184843,77.261947"
+                  href="https://maps.app.goo.gl/Ka1aie81ZXqbWSN89"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline btn-sm no-print"

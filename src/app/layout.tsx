@@ -95,7 +95,7 @@ export default function RootLayout({
       latitude: 9.0184843,
       longitude: 77.261947,
     },
-    hasMap: 'https://www.google.com/maps/dir/?api=1&destination=9.0184843,77.261947',
+    hasMap: 'https://maps.app.goo.gl/Ka1aie81ZXqbWSN89',
   };
 
   const webSiteSchema = {

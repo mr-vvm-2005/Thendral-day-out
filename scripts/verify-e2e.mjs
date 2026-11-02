@@ -26,7 +26,7 @@ async function runTests() {
     assert(homeHtml.includes('Near Panpoli Thaika Bus Stop'), 'Homepage has verified address');
     assert(homeHtml.includes('fWRteDfwIDh9Wxw_8wfTTsSnOL2NOfo2k26qEGtfjUA'), 'Homepage contains Google site verification meta tag');
     assert(homeHtml.includes('name="viewport"'), 'Homepage contains mobile responsive viewport meta tag');
-    assert(homeHtml.includes('destination=9.0184843,77.261947'), 'Homepage contains direct navigation coordinates to Google Maps');
+    assert(homeHtml.includes('Ka1aie81ZXqbWSN89'), 'Homepage contains exact Google Maps link Ka1aie81ZXqbWSN89');
   } catch (e) {
     assert(false, `Homepage test error: ${e.message}`);
   }

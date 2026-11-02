@@ -9,7 +9,7 @@ interface FinalCTAProps {
 }
 
 export default function FinalCTA({ onCheckAvailability, onBookNow }: FinalCTAProps) {
-  const googleMapsUrl = 'https://www.google.com/maps/dir/?api=1&destination=9.0184843,77.261947';
+  const googleMapsUrl = 'https://maps.app.goo.gl/Ka1aie81ZXqbWSN89';
   const whatsappUrl =
     'https://wa.me/918778038383?text=' +
     encodeURIComponent('Hello Thendral Day Out, I am ready to book the venue for a private full day. Please check availability for my date.');

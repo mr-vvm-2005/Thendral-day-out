@@ -33,6 +33,8 @@ import {
   MessageCircle,
   Trash2,
   RotateCcw,
+  Menu,
+  X,
 } from 'lucide-react';
 import { Booking, Customer, SettingData } from '@/lib/types';
 import { generateTicketImage, downloadTicketDataUrl } from '@/lib/ticketImage';
@@ -42,6 +44,7 @@ export default function AdminPage() {
 
   // Navigation tab
   const [activeTab, setActiveTab] = useState<'overview' | 'calendar' | 'bookings' | 'customers' | 'reports' | 'settings'>('overview');
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   // State
   const [loading, setLoading] = useState(true);
@@ -370,39 +373,131 @@ export default function AdminPage() {
   const overview = reportsData?.overview || {};
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', color: 'var(--text-primary)' }}>
-      {/* Sidebar */}
-      <aside style={{
-        width: '260px',
-        backgroundColor: '#071d2f',
-        color: '#ffffff',
-        display: 'flex',
-        flexDirection: 'column',
-        flexShrink: 0,
-        borderRight: '1px solid rgba(255, 255, 255, 0.1)',
-      }}>
-        {/* Brand */}
-        <div style={{ padding: '24px 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <div className="admin-layout-root" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', color: 'var(--text-primary)' }}>
+      {/* Mobile Top App Bar */}
+      <div className="admin-mobile-topbar">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button
+            onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+            style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: '8px',
+              color: '#ffffff',
+              padding: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+            aria-label="Toggle navigation drawer"
+          >
+            {isMobileNavOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
-              position: 'relative',
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
               backgroundColor: '#ffffff',
               padding: '2px',
               overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
-              <Image src="/images/logo.png" alt="Logo" width={40} height={40} style={{ objectFit: 'contain' }} />
+              <Image src="/images/logo.png" alt="Logo" width={28} height={28} style={{ objectFit: 'contain' }} />
             </div>
             <div>
-              <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.1rem', fontWeight: 800 }}>
+              <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: '0.95rem', fontWeight: 800, color: '#ffffff' }}>
                 THENDRAL DAY OUT
               </div>
-              <div style={{ fontSize: '0.72rem', color: '#86efac', fontWeight: 700, textTransform: 'uppercase' }}>
+              <div style={{ fontSize: '0.68rem', color: '#86efac', fontWeight: 700, textTransform: 'uppercase' }}>
                 Admin Portal
               </div>
             </div>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="btn btn-sm"
+          style={{ backgroundColor: 'var(--accent-green)', color: '#ffffff', padding: '6px 12px', fontSize: '0.8rem', fontWeight: 700 }}
+        >
+          <Plus size={15} />
+          <span>New</span>
+        </button>
+      </div>
+
+      {/* Mobile Backdrop Overlay */}
+      {isMobileNavOpen && (
+        <div
+          onClick={() => setIsMobileNavOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(3, 20, 36, 0.72)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 95,
+          }}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`admin-sidebar ${isMobileNavOpen ? 'mobile-open' : ''}`}
+        style={{
+          width: '260px',
+          backgroundColor: '#071d2f',
+          color: '#ffffff',
+          display: 'flex',
+          flexDirection: 'column',
+          flexShrink: 0,
+          borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+        }}
+      >
+        {/* Brand */}
+        <div style={{ padding: '24px 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{
+                position: 'relative',
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                backgroundColor: '#ffffff',
+                padding: '2px',
+                overflow: 'hidden',
+              }}>
+                <Image src="/images/logo.png" alt="Logo" width={40} height={40} style={{ objectFit: 'contain' }} />
+              </div>
+              <div>
+                <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.1rem', fontWeight: 800 }}>
+                  THENDRAL DAY OUT
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#86efac', fontWeight: 700, textTransform: 'uppercase' }}>
+                  Admin Portal
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsMobileNavOpen(false)}
+              className="admin-sidebar-close-btn"
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: 'none',
+                borderRadius: '8px',
+                color: '#ffffff',
+                padding: '6px',
+                cursor: 'pointer',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              aria-label="Close menu"
+            >
+              <X size={18} />
+            </button>
           </div>
         </div>
 
@@ -420,7 +515,10 @@ export default function AdminPage() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => {
+                  setActiveTab(tab.id as any);
+                  setIsMobileNavOpen(false);
+                }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -479,7 +577,7 @@ export default function AdminPage() {
       </aside>
 
       {/* Main Content Area */}
-      <main style={{ flexGrow: 1, overflowY: 'auto', padding: '32px' }}>
+      <main className="admin-main-area" style={{ flexGrow: 1, overflowY: 'auto', padding: '32px' }}>
         {/* Top bar with quick Create Booking button */}
         <div style={{
           display: 'flex',
@@ -2300,6 +2398,69 @@ export default function AdminPage() {
           </div>
         )}
       </main>
+
+      <style jsx>{`
+        .admin-mobile-topbar {
+          display: none;
+        }
+        .admin-sidebar-close-btn {
+          display: none;
+        }
+
+        @media (max-width: 1023px) {
+          :global(.admin-layout-root) {
+            flex-direction: column !important;
+          }
+
+          .admin-mobile-topbar {
+            display: flex !important;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: #071d2f;
+            color: #ffffff;
+            padding: 12px 16px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+          }
+
+          :global(.admin-sidebar) {
+            position: fixed !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            width: 280px !important;
+            max-width: 85vw !important;
+            z-index: 100 !important;
+            transform: translateX(-100%);
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+            visibility: hidden;
+          }
+
+          :global(.admin-sidebar.mobile-open) {
+            transform: translateX(0) !important;
+            pointer-events: auto !important;
+            visibility: visible !important;
+          }
+
+          .admin-sidebar-close-btn {
+            display: flex !important;
+          }
+
+          :global(.admin-main-area) {
+            padding: clamp(14px, 3.5vw, 24px) !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -310,8 +310,8 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   ctx.fillText(`Helpdesk / Gate Phone: ${params.phone || '8778038383'}`, 84, addressY + 98);
 
   ctx.fillStyle = '#0284c7';
-  ctx.font = '600 15px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('GPS: 9.018484, 77.261947 (Panpoli)', 540, addressY + 98);
+  ctx.font = '600 14px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('Maps: https://maps.app.goo.gl/Ka1aie81ZXqbWSN89', 510, addressY + 98);
 
   // Bottom Security Footer
   const footerY = 1220;

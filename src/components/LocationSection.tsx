@@ -4,7 +4,7 @@ import React from 'react';
 import { MapPin, Phone, MessageCircle, Navigation, Clock, Sparkles } from 'lucide-react';
 
 export default function LocationSection() {
-  const googleMapsUrl = 'https://www.google.com/maps/dir/?api=1&destination=9.0184843,77.261947';
+  const googleMapsUrl = 'https://maps.app.goo.gl/Ka1aie81ZXqbWSN89';
   const whatsappUrl =
     'https://wa.me/918778038383?text=' +
     encodeURIComponent('Hello Thendral Day Out, I would like to get directions and check availability for a day out.');
