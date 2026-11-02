@@ -1850,7 +1850,7 @@ export default function AdminPage() {
               style={{
                 backgroundColor: '#ffffff',
                 borderRadius: '24px',
-                maxWidth: '620px',
+                maxWidth: '680px',
                 width: '100%',
                 maxHeight: '92vh',
                 display: 'flex',
@@ -1944,7 +1944,7 @@ export default function AdminPage() {
                       />
                     </div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '8px', textAlign: 'center' }}>
-                      High-resolution PNG image (960 × 1380 px) ready for download or sharing
+                      Compact digital event pass (1100 × 480 px) ready for download or sharing
                     </div>
                   </div>
                 )}

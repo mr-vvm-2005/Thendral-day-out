@@ -30,328 +30,23 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
 }
 
 /**
- * Generate a high-resolution e-ticket PNG image using HTML5 Canvas
+ * Draw realistic barcode lines
  */
-export async function generateTicketImage(params: TicketImageParams): Promise<string> {
-  const width = 960;
-  const height = 1380;
-
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('Canvas 2D context not available');
-
-  // Background gradient for whole ticket canvas
-  const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-  bgGrad.addColorStop(0, '#f0f9ff');
-  bgGrad.addColorStop(0.5, '#ffffff');
-  bgGrad.addColorStop(1, '#f8fafc');
-  ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, width, height);
-
-  // Outer border & frame
-  ctx.strokeStyle = '#bae6fd';
-  ctx.lineWidth = 4;
-  roundRect(ctx, 20, 20, width - 40, height - 40, 28);
-  ctx.stroke();
-
-  // Header background (Navy gradient)
-  const headerHeight = 220;
-  const headerGrad = ctx.createLinearGradient(0, 20, width, headerHeight);
-  headerGrad.addColorStop(0, '#072b4a');
-  headerGrad.addColorStop(0.6, '#0c4a6e');
-  headerGrad.addColorStop(1, '#059669');
-
+function drawBarcode(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number) {
   ctx.save();
-  roundRect(ctx, 20, 20, width - 40, headerHeight, { tl: 28, tr: 28, br: 0, bl: 0 });
-  ctx.fillStyle = headerGrad;
-  ctx.fill();
-  ctx.restore();
-
-  // Draw Logo in header
-  const logoImg = await loadImage('/images/logo.png');
-  const logoSize = 120;
-  const logoX = 54;
-  const logoY = 68;
-
-  // White rounded box behind logo
-  ctx.save();
-  ctx.fillStyle = '#ffffff';
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
-  ctx.shadowBlur = 12;
-  ctx.shadowOffsetY = 4;
-  roundRect(ctx, logoX, logoY, logoSize, logoSize, 20);
-  ctx.fill();
-  ctx.restore();
-
-  if (logoImg) {
-    ctx.drawImage(logoImg, logoX + 8, logoY + 8, logoSize - 16, logoSize - 16);
-  }
-
-  // Header Texts
-  const textX = logoX + logoSize + 28;
-
-  // Parent brand
-  ctx.fillStyle = '#86efac';
-  ctx.font = 'bold 18px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('by THENDRAL GROUPS', textX, 96);
-
-  // Brand Name
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 44px "Outfit", "Fredoka", sans-serif';
-  ctx.fillText('THENDRAL DAY OUT', textX, 142);
-
-  // Tagline
-  ctx.fillStyle = '#fef08a';
-  ctx.font = '600 20px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('Swim • Play • Celebrate • Make Memories', textX, 174);
-
-  // Top Ticket Badge (Category pill)
-  const badgeText = 'PRIVATE FULL-DAY VENUE E-TICKET';
-  ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
-  const badgeWidth = ctx.measureText(badgeText).width + 28;
-  const badgeX = width - 60 - badgeWidth;
-  const badgeY = 56;
-
-  ctx.save();
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-  roundRect(ctx, badgeX, badgeY, badgeWidth, 34, 17);
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText(badgeText, badgeX + 14, badgeY + 22);
-  ctx.restore();
-
-  // Booking Reference & Status Banner
-  const bannerY = 265;
-  const bannerHeight = 84;
-  ctx.save();
-  ctx.fillStyle = '#ecfdf5';
-  roundRect(ctx, 48, bannerY, width - 96, bannerHeight, 16);
-  ctx.fill();
-  ctx.strokeStyle = '#a7f3d0';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.restore();
-
-  // Reference label & ID
-  ctx.fillStyle = '#065f46';
-  ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('OFFICIAL BOOKING REFERENCE ID', 72, bannerY + 32);
-
-  ctx.fillStyle = '#0c4a6e';
-  ctx.font = 'bold 32px "Outfit", monospace';
-  ctx.fillText(params.bookingId, 72, bannerY + 68);
-
-  // Status badges on banner right
-  const statusX = width - 72;
-  drawStatusPill(ctx, statusX, bannerY + 42, `BOOKING: ${params.bookingStatus.toUpperCase()}`, '#059669', '#dcfce7');
-
-  // Customer & Reservation Details Card
-  const detailsY = 380;
-
-  // Left Column: Customer details
-  ctx.fillStyle = '#64748b';
-  ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('RESERVED GUEST NAME', 60, detailsY);
-
-  ctx.fillStyle = '#0f172a';
-  ctx.font = 'bold 34px "Outfit", sans-serif';
-  ctx.fillText(params.customerName, 60, detailsY + 40);
-
-  if (params.customerPhone) {
-    ctx.fillStyle = '#475569';
-    ctx.font = '600 18px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText(`Mobile Contact: ${params.customerPhone}`, 60, detailsY + 74);
-  }
-
-  // Reservation Data Box (Date, Timing, Access)
-  const infoBoxY = detailsY + 104;
-  const infoBoxWidth = 500;
-  const infoBoxHeight = 220;
-
-  ctx.save();
-  ctx.fillStyle = '#ffffff';
-  roundRect(ctx, 60, infoBoxY, infoBoxWidth, infoBoxHeight, 18);
-  ctx.fill();
-  ctx.strokeStyle = '#e2e8f0';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  // Lines inside info box
-  drawInfoRow(ctx, 84, infoBoxY + 40, 'Date of Visit:', formatDate(params.bookingDate), '#0284c7');
-  drawInfoRow(ctx, 84, infoBoxY + 84, 'Reservation Type:', 'Private Exclusive Venue (Full Day)', '#0f172a');
-  drawInfoRow(ctx, 84, infoBoxY + 128, 'Venue Timings:', '09:00 AM – 06:00 PM', '#059669');
-  drawInfoRow(ctx, 84, infoBoxY + 172, 'Amount Paid:', `₹${params.amount.toLocaleString()} (${params.paymentMethod || 'UPI'} - ${params.paymentStatus})`, '#0284c7');
-
-  // Right Column: QR Code Box
-  const qrBoxX = 590;
-  const qrBoxY = detailsY;
-  const qrBoxWidth = 310;
-  const qrBoxHeight = 324;
-
-  ctx.save();
-  ctx.fillStyle = '#ffffff';
-  roundRect(ctx, qrBoxX, qrBoxY, qrBoxWidth, qrBoxHeight, 20);
-  ctx.fill();
-  ctx.strokeStyle = '#bae6fd';
-  ctx.lineWidth = 2;
-  ctx.shadowColor = 'rgba(2, 132, 199, 0.08)';
-  ctx.shadowBlur = 14;
-  ctx.stroke();
-  ctx.restore();
-
-  // Load or generate QR Code
-  let qrImg: HTMLImageElement | null = null;
-  if (params.qrCodeUrl) {
-    qrImg = await loadImage(params.qrCodeUrl);
-  } else {
-    // Generate QR code data url on the fly
-    const verifyUrl = params.verifyUrl || `https://thendraldayout.com/verify/${params.bookingId}`;
-    try {
-      const generated = await QRCode.toDataURL(verifyUrl, { width: 220, margin: 1 });
-      qrImg = await loadImage(generated);
-    } catch (e) {
-      console.error('Failed to generate QR for image:', e);
+  ctx.fillStyle = '#1e293b';
+  const pattern = [2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1, 1, 3, 1, 2, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1];
+  const totalUnits = pattern.reduce((acc, v) => acc + v, 0);
+  const unitW = width / totalUnits;
+  let curX = x;
+  for (let i = 0; i < pattern.length; i++) {
+    const barW = pattern[i] * unitW;
+    if (i % 2 === 0) {
+      ctx.fillRect(curX, y, barW, height);
     }
+    curX += barW;
   }
-
-  if (qrImg) {
-    ctx.drawImage(qrImg, qrBoxX + 45, qrBoxY + 30, 220, 220);
-  }
-
-  ctx.fillStyle = '#0c4a6e';
-  ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('Scan to Verify at Gate', qrBoxX + (qrBoxWidth / 2), qrBoxY + 280);
-  ctx.fillStyle = '#64748b';
-  ctx.font = '13px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('Official QR Digital Security Token', qrBoxX + (qrBoxWidth / 2), qrBoxY + 302);
-  ctx.textAlign = 'left';
-
-  // Facilities Included Banner
-  const facY = 740;
-  ctx.save();
-  ctx.fillStyle = '#f0f9ff';
-  roundRect(ctx, 60, facY, width - 120, 190, 18);
-  ctx.fill();
-  ctx.strokeStyle = '#bae6fd';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
   ctx.restore();
-
-  ctx.fillStyle = '#0369a1';
-  ctx.font = 'bold 16px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('INCLUDED VENUE AMENITIES (EXCLUSIVE ACCESS):', 84, facY + 36);
-
-  const amenities = [
-    '🏊 Swimming Pools (Separate Adult & Safe Kids Areas)',
-    '🌊 Refreshing Artificial Waterfall Feature in Pool',
-    '🎪 Shaded Outdoor Kids Playground with Slide & Swings',
-    '🎉 Covered Birthday Celebration & Party Hall',
-    '🌴 Lush Tropical Garden & Countryside Breeze',
-    '🍱 Outdoor Dining Tables (Bring Your Own Prepared Food)',
-    '🚿 Private Dressing Rooms & Clean Restroom Facilities',
-  ];
-
-  ctx.fillStyle = '#334155';
-  ctx.font = '15px "Plus Jakarta Sans", sans-serif';
-  amenities.forEach((amenity, idx) => {
-    const col = idx < 4 ? 0 : 1;
-    const row = idx < 4 ? idx : idx - 4;
-    const ax = 84 + (col * 400);
-    const ay = facY + 70 + (row * 28);
-    ctx.fillText(amenity, ax, ay);
-  });
-
-  // Food Notice Banner
-  const noticeY = 960;
-  ctx.save();
-  ctx.fillStyle = '#fffbeb';
-  roundRect(ctx, 60, noticeY, width - 120, 68, 14);
-  ctx.fill();
-  ctx.strokeStyle = '#fde68a';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  ctx.fillStyle = '#92400e';
-  ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('🍱 Food Policy: Bring Your Own Prepared Food', 84, noticeY + 30);
-  ctx.fillStyle = '#78350f';
-  ctx.font = '14px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('Guests are welcome to use our dry dining tables. No restaurant, cooking, or catering is provided.', 84, noticeY + 52);
-
-  // Venue Address & Contact Block
-  const addressY = 1060;
-  ctx.save();
-  ctx.fillStyle = '#ffffff';
-  roundRect(ctx, 60, addressY, width - 120, 130, 16);
-  ctx.fill();
-  ctx.strokeStyle = '#e2e8f0';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  ctx.fillStyle = '#0f172a';
-  ctx.font = 'bold 16px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('📍 VENUE ADDRESS & LOCATION', 84, addressY + 34);
-
-  ctx.fillStyle = '#475569';
-  ctx.font = '16px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText(params.location || 'Near Panpoli Thaika Bus Stop, Panpoli, Tenkasi, Tamil Nadu', 84, addressY + 62);
-
-  ctx.fillStyle = '#059669';
-  ctx.font = 'bold 18px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText(`Helpdesk / Gate Phone: ${params.phone || '8778038383'}`, 84, addressY + 98);
-
-  ctx.fillStyle = '#0284c7';
-  ctx.font = '600 14px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('Maps: https://maps.app.goo.gl/Ka1aie81ZXqbWSN89', 510, addressY + 98);
-
-  // Bottom Security Footer
-  const footerY = 1220;
-  ctx.fillStyle = '#94a3b8';
-  ctx.font = '13px "Plus Jakarta Sans", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('Official Digital E-Ticket issued by Thendral Groups • Valid exclusively for the booked date and group', width / 2, footerY);
-  ctx.fillText('Please present this image or digital reference code at the venue gate for priority entry.', width / 2, footerY + 22);
-
-  // Ticket Cut Line / Dashed Border at bottom
-  ctx.save();
-  ctx.strokeStyle = '#cbd5e1';
-  ctx.setLineDash([8, 8]);
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(50, 1275);
-  ctx.lineTo(width - 50, 1275);
-  ctx.stroke();
-  ctx.restore();
-
-  ctx.fillStyle = '#64748b';
-  ctx.font = 'bold 13px monospace';
-  ctx.fillText(`SECURITY CHECKSUM: TDO-${params.bookingId}-${Date.now().toString().slice(-6)}`, width / 2, 1315);
-  ctx.textAlign = 'left';
-
-  return canvas.toDataURL('image/png', 1.0);
-}
-
-/**
- * Trigger immediate client-side download of a dataURL image
- */
-export function downloadTicketDataUrl(dataUrl: string, bookingId: string, customerName?: string) {
-  const safeName = customerName ? customerName.replace(/[^a-zA-Z0-9]/g, '_') : 'Customer';
-  const filename = `ThendralDayOut_Ticket_${safeName}_${bookingId}.png`;
-  const a = document.createElement('a');
-  a.href = dataUrl;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
 }
 
 /**
@@ -392,58 +87,6 @@ function roundRect(
 }
 
 /**
- * Draw a status badge on canvas
- */
-function drawStatusPill(
-  ctx: CanvasRenderingContext2D,
-  rightX: number,
-  centerY: number,
-  text: string,
-  color: string,
-  bg: string
-) {
-  ctx.save();
-  ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
-  const textWidth = ctx.measureText(text).width;
-  const pillW = textWidth + 28;
-  const pillH = 36;
-  const pillX = rightX - pillW;
-  const pillY = centerY - (pillH / 2);
-
-  ctx.fillStyle = bg;
-  roundRect(ctx, pillX, pillY, pillW, pillH, pillH / 2);
-  ctx.fill();
-
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-
-  ctx.fillStyle = color;
-  ctx.fillText(text, pillX + 14, pillY + 23);
-  ctx.restore();
-}
-
-/**
- * Draw key/value row
- */
-function drawInfoRow(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  label: string,
-  value: string,
-  valColor: string = '#0f172a'
-) {
-  ctx.fillStyle = '#64748b';
-  ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText(label, x, y);
-
-  ctx.fillStyle = valColor;
-  ctx.font = 'bold 16px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText(value, x + 150, y);
-}
-
-/**
  * Date formatter
  */
 function formatDate(dateStr: string): string {
@@ -451,7 +94,7 @@ function formatDate(dateStr: string): string {
     const d = new Date(dateStr + 'T00:00:00');
     return d.toLocaleDateString('en-IN', {
       day: '2-digit',
-      month: 'long',
+      month: 'short',
       year: 'numeric',
     });
   } catch {
@@ -459,3 +102,291 @@ function formatDate(dateStr: string): string {
   }
 }
 
+/**
+ * Generate a compact, neat horizontal event pass PNG (matching reference ticket pass)
+ */
+export async function generateTicketImage(params: TicketImageParams): Promise<string> {
+  const width = 1100;
+  const height = 480;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Canvas 2D context not available');
+
+  const canvasBg = '#f1f5f9';
+  ctx.fillStyle = canvasBg;
+  ctx.fillRect(0, 0, width, height);
+
+  // Outer Ticket Card Dimensions
+  const cardX = 24;
+  const cardY = 20;
+  const cardW = width - 48; // 1052
+  const cardH = height - 40; // 440
+  const cardRadius = 24;
+
+  // Outer border & card background (rich deep red accent border like reference image)
+  ctx.save();
+  ctx.fillStyle = '#b91c1c';
+  roundRect(ctx, cardX, cardY, cardW, cardH, cardRadius);
+  ctx.fill();
+
+  // Inner ticket body (inset 8px)
+  const innerX = cardX + 8;
+  const innerY = cardY + 8;
+  const innerW = cardW - 16;
+  const innerH = cardH - 16;
+  ctx.fillStyle = '#fffdfa'; // Clean warm ivory
+  roundRect(ctx, innerX, innerY, innerW, innerH, cardRadius - 6);
+  ctx.fill();
+  ctx.restore();
+
+  // LEFT COLUMN: Real Venue Photo (Width ~260px)
+  const photoW = 260;
+  const photoH = innerH;
+  const photoImg = await loadImage('/images/pool-main.jpg');
+
+  ctx.save();
+  roundRect(ctx, innerX, innerY, photoW, photoH, { tl: cardRadius - 6, tr: 0, br: 0, bl: cardRadius - 6 });
+  ctx.clip();
+  if (photoImg) {
+    ctx.drawImage(photoImg, innerX, innerY, photoW, photoH);
+  } else {
+    const pGrad = ctx.createLinearGradient(innerX, innerY, innerX + photoW, innerY + photoH);
+    pGrad.addColorStop(0, '#0284c7');
+    pGrad.addColorStop(1, '#0c4a6e');
+    ctx.fillStyle = pGrad;
+    ctx.fillRect(innerX, innerY, photoW, photoH);
+  }
+
+  // Dark gradient overlay on photo bottom
+  const photoOverlay = ctx.createLinearGradient(innerX, innerY + photoH - 100, innerX, innerY + photoH);
+  photoOverlay.addColorStop(0, 'rgba(0,0,0,0)');
+  photoOverlay.addColorStop(1, 'rgba(0,0,0,0.7)');
+  ctx.fillStyle = photoOverlay;
+  ctx.fillRect(innerX, innerY, photoW, photoH);
+
+  // Photo bottom tag
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('100% PRIVATE VENUE', innerX + 16, innerY + photoH - 18);
+  ctx.restore();
+
+  // PERFORATION & NOTCH CUTOUTS (Separating Center and Right Stub)
+  const stubW = 270;
+  const stubX = innerX + innerW - stubW; // ~782
+  const notchRadius = 18;
+
+  // Draw semi-circle notch cutouts at top and bottom of perforation line
+  ctx.save();
+  ctx.fillStyle = canvasBg;
+
+  // Top notch
+  ctx.beginPath();
+  ctx.arc(stubX, cardY, notchRadius, 0, Math.PI);
+  ctx.fill();
+
+  // Bottom notch
+  ctx.beginPath();
+  ctx.arc(stubX, cardY + cardH, notchRadius, Math.PI, 0);
+  ctx.fill();
+
+  // Vertical dashed perforation line
+  ctx.strokeStyle = '#d1d5db';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6, 6]);
+  ctx.beginPath();
+  ctx.moveTo(stubX, innerY + notchRadius + 4);
+  ctx.lineTo(stubX, innerY + innerH - notchRadius - 4);
+  ctx.stroke();
+  ctx.restore();
+
+  // CENTER SECTION: Ticket Content
+  const centerX = innerX + photoW + 28;
+
+  // Brand Row: Logo + THENDRAL DAY OUT
+  const logoImg = await loadImage('/images/logo.png');
+  const logoY = innerY + 22;
+  if (logoImg) {
+    ctx.drawImage(logoImg, centerX, logoY, 38, 38);
+  }
+
+  const brandTextX = centerX + 48;
+  ctx.fillStyle = '#0f172a';
+  ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('THENDRAL DAY OUT', brandTextX, logoY + 22);
+
+  ctx.fillStyle = '#16a34a';
+  ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('BY THENDRAL GROUPS', brandTextX, logoY + 36);
+
+  // Kicker
+  const kickerY = logoY + 66;
+  ctx.fillStyle = '#64748b';
+  ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('EXCLUSIVE FULL-DAY PRIVATE PASS', centerX, kickerY);
+
+  // Headline
+  const headlineY = kickerY + 32;
+  ctx.fillStyle = '#0f172a';
+  ctx.font = '800 30px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('Swim, Play & Celebrate.', centerX, headlineY);
+
+  // Guest details line
+  const detailsY = headlineY + 44;
+  ctx.font = 'bold 13px "Plus Jakarta Sans", sans-serif';
+
+  // Guest Name
+  ctx.fillStyle = '#64748b';
+  ctx.fillText('GUEST: ', centerX, detailsY);
+  const guestLabelW = ctx.measureText('GUEST: ').width;
+  ctx.fillStyle = '#0f172a';
+  ctx.fillText(params.customerName, centerX + guestLabelW, detailsY);
+
+  // Date
+  const dateX = centerX + 230;
+  ctx.fillStyle = '#64748b';
+  ctx.fillText('DATE: ', dateX, detailsY);
+  const dateLabelW = ctx.measureText('DATE: ').width;
+  ctx.fillStyle = '#0f172a';
+  ctx.fillText(formatDate(params.bookingDate), dateX + dateLabelW, detailsY);
+
+  // Timing & Pass Status
+  const line2Y = detailsY + 26;
+  ctx.fillStyle = '#64748b';
+  ctx.fillText('TIME: ', centerX, line2Y);
+  const timeLabelW = ctx.measureText('TIME: ').width;
+  ctx.fillStyle = '#0f172a';
+  ctx.fillText('09:00 AM – 06:00 PM', centerX + timeLabelW, line2Y);
+
+  ctx.fillStyle = '#64748b';
+  ctx.fillText('PASS: ', dateX, line2Y);
+  const passLabelW = ctx.measureText('PASS: ').width;
+  ctx.fillStyle = '#15803d';
+  ctx.fillText(`₹${params.amount.toLocaleString()} Paid (Confirmed)`, dateX + passLabelW, line2Y);
+
+  // Feature Pills
+  const pillsY = line2Y + 36;
+  const pills = ['Swimming Pool', 'Waterfalls', 'Kids Pool', 'Party Hall', 'Garden'];
+  let curPillX = centerX;
+  ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
+
+  pills.forEach((p) => {
+    const textW = ctx.measureText(p).width;
+    const pillW = textW + 18;
+    const pillH = 24;
+
+    ctx.save();
+    ctx.fillStyle = '#f1f5f9';
+    roundRect(ctx, curPillX, pillsY, pillW, pillH, 12);
+    ctx.fill();
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = '#334155';
+    ctx.fillText(p, curPillX + 9, pillsY + 16);
+    ctx.restore();
+
+    curPillX += pillW + 8;
+  });
+
+  // Red URL Pill
+  const actionPillY = pillsY + 44;
+  const actionText = 'thendraldayout.com • Panpoli, Tenkasi';
+  ctx.font = 'bold 13px "Plus Jakarta Sans", sans-serif';
+  const actionW = ctx.measureText(actionText).width + 36;
+  const actionH = 36;
+
+  ctx.save();
+  ctx.fillStyle = '#b91c1c';
+  roundRect(ctx, centerX, actionPillY, actionW, actionH, 18);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(actionText, centerX + 18, actionPillY + 23);
+  ctx.restore();
+
+  // RIGHT STUB: Ticket Pass Tear-Off
+  const stubCenterX = stubX + (stubW / 2);
+
+  // Stub Header: ENTRY PASS / No. ID
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#64748b';
+  ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('ENTRY PASS', stubCenterX, innerY + 34);
+
+  ctx.fillStyle = '#0f172a';
+  ctx.font = '800 16px monospace';
+  ctx.fillText(`No. ${params.bookingId}`, stubCenterX, innerY + 56);
+
+  // Generate QR Code data URL if not provided
+  let qrDataUrl = params.qrCodeUrl;
+  if (!qrDataUrl) {
+    try {
+      const verifyTarget = params.verifyUrl || `https://thendraldayout.com/verify/${params.bookingId}`;
+      qrDataUrl = await QRCode.toDataURL(verifyTarget, {
+        margin: 1,
+        width: 150,
+        color: { dark: '#0f172a', light: '#ffffff' },
+      });
+    } catch {
+      // ignore
+    }
+  }
+
+  // Draw QR code
+  const qrSize = 145;
+  const qrX = stubCenterX - (qrSize / 2);
+  const qrY = innerY + 76;
+
+  if (qrDataUrl) {
+    const qrImg = await loadImage(qrDataUrl);
+    if (qrImg) {
+      ctx.save();
+      ctx.fillStyle = '#ffffff';
+      roundRect(ctx, qrX - 6, qrY - 6, qrSize + 12, qrSize + 12, 12);
+      ctx.fill();
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+      ctx.restore();
+    }
+  }
+
+  // "SCAN AT THE GATE"
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#64748b';
+  ctx.font = 'bold 10px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText('SCAN AT THE GATE', stubCenterX, qrY + qrSize + 22);
+
+  // Barcode Graphic & Booking ID underneath
+  const barcodeY = qrY + qrSize + 36;
+  const barcodeW = 160;
+  const barcodeH = 30;
+  const barcodeX = stubCenterX - (barcodeW / 2);
+
+  drawBarcode(ctx, barcodeX, barcodeY, barcodeW, barcodeH);
+
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '10px monospace';
+  ctx.fillText(`* ${params.bookingId} *`, stubCenterX, barcodeY + barcodeH + 14);
+
+  return canvas.toDataURL('image/png');
+}
+
+/**
+ * Trigger file download in browser
+ */
+export function downloadTicketDataUrl(dataUrl: string, bookingId: string, customerName: string) {
+  const cleanName = customerName.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+  const filename = `ThendralDayOut_Ticket_${bookingId}_${cleanName}.png`;
+
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
