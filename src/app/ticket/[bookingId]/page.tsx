@@ -5,16 +5,10 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  Printer,
   Download,
   Share2,
-  CheckCircle2,
   MapPin,
   Phone,
-  Calendar,
-  Clock,
-  Waves,
-  ShieldCheck,
   ArrowLeft,
   AlertCircle,
   FileImage,
@@ -93,9 +87,9 @@ export default function TicketPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f1f5f9' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--primary-blue-dark)' }}>
+          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#072b4a' }}>
             Loading your Digital Booking Pass...
           </div>
         </div>
@@ -105,8 +99,8 @@ export default function TicketPage() {
 
   if (error || !ticketData) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f1f5f9', padding: '20px' }}>
-        <div style={{ backgroundColor: '#ffffff', borderRadius: '20px', padding: '36px', maxWidth: '440px', width: '100%', textAlign: 'center', boxShadow: 'var(--shadow-md)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc', padding: '20px' }}>
+        <div style={{ backgroundColor: '#ffffff', borderRadius: '20px', padding: '36px', maxWidth: '440px', width: '100%', textAlign: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}>
           <AlertCircle size={44} color="#dc2626" style={{ margin: '0 auto 16px auto' }} />
           <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#991b1b', marginBottom: '8px' }}>
             Ticket Unavailable
@@ -122,8 +116,10 @@ export default function TicketPage() {
     );
   }
 
+  const phoneNum = ticketData.venue?.phone || '8778038383';
+
   return (
-    <div className="ticket-page-root" style={{ backgroundColor: '#f1f5f9', minHeight: '100vh', padding: '32px 14px' }}>
+    <div className="ticket-page-root" style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '32px 14px' }}>
       <div style={{ maxWidth: '880px', margin: '0 auto' }}>
         {/* Navigation & Action Bar */}
         <div className="no-print" style={{
@@ -154,7 +150,7 @@ export default function TicketPage() {
               onClick={handleDownloadImage}
               disabled={downloadingImage}
               className="btn btn-primary btn-sm"
-              style={{ backgroundColor: 'var(--accent-green)', fontSize: '0.82rem', padding: '7px 14px' }}
+              style={{ backgroundColor: '#059669', fontSize: '0.82rem', padding: '7px 14px' }}
             >
               <FileImage size={15} />
               <span>{downloadingImage ? 'Generating Image...' : 'Download Image (PNG)'}</span>
@@ -162,7 +158,7 @@ export default function TicketPage() {
             <button
               onClick={handlePrint}
               className="btn btn-primary btn-sm"
-              style={{ backgroundColor: 'var(--primary-blue)', fontSize: '0.82rem', padding: '7px 14px' }}
+              style={{ backgroundColor: '#072b4a', fontSize: '0.82rem', padding: '7px 14px' }}
             >
               <Download size={15} />
               <span>Download PDF / Print</span>
@@ -178,67 +174,71 @@ export default function TicketPage() {
           </div>
         </div>
 
-        {/* NEAT COMPACT EVENT PASS TICKET (Matching Reference Style) */}
+        {/* NEAT COMPACT EVENT PASS TICKET (Deep Navy & Emerald Theme) */}
         <div className="ticket-frame">
           <div className="ticket-body">
-            {/* Left Photo Section */}
+            {/* Left Waterfall Cascade Photo */}
             <div className="ticket-photo-col">
               <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '180px' }}>
                 <Image
-                  src="/images/pool-main.jpg"
-                  alt="Thendral Day Out Venue Pool"
+                  src="/images/falls-feature.jpg"
+                  alt="Thendral Day Out Waterfall Cascade & Pool"
                   fill
                   style={{ objectFit: 'cover' }}
                   priority
                 />
                 <div className="ticket-photo-badge">
-                  <span>100% PRIVATE VENUE</span>
+                  <span>WATERFALL &amp; POOL VENUE</span>
                 </div>
               </div>
             </div>
 
             {/* Center Content Section */}
             <div className="ticket-center-col">
-              {/* Brand Row */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+              {/* Brand Row with exact vertical alignment */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
                 <div style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '10px',
                   backgroundColor: '#ffffff',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-                  padding: '2px',
+                  border: '1.5px solid #bae6fd',
+                  boxShadow: '0 2px 6px rgba(7, 43, 74, 0.08)',
+                  padding: '3px',
                   overflow: 'hidden',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
                 }}>
-                  <Image src="/images/logo.png" alt="Logo" width={28} height={28} style={{ objectFit: 'contain' }} />
+                  <Image src="/images/logo.png" alt="Logo" width={32} height={32} style={{ objectFit: 'contain' }} />
                 </div>
                 <div>
-                  <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.05rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>
-                    THENDRAL DAY OUT
+                  <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.08rem', fontWeight: 800, color: '#072b4a', lineHeight: 1.15 }}>
+                    THENDRAL <span style={{ color: '#0284c7' }}>DAY OUT</span>
                   </div>
-                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#16a34a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                    by Thendral Groups
+                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    by Thendral Groups • Panpoli
                   </div>
                 </div>
               </div>
 
-              {/* Kicker & Bold Title */}
-              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>
-                FOR YOUR PRIVATE CELEBRATION
+              {/* Kicker */}
+              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#0284c7', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>
+                EXCLUSIVE FULL-DAY PRIVATE PASS
               </div>
+
+              {/* Refined Headline with Reduced Font Size (Clean & balanced) */}
               <h1 style={{
                 fontFamily: 'Outfit, Fredoka, sans-serif',
-                fontSize: 'clamp(1.25rem, 3.2vw, 1.65rem)',
+                fontSize: 'clamp(1.15rem, 2.5vw, 1.35rem)',
                 fontWeight: 800,
-                color: '#0f172a',
-                lineHeight: 1.15,
-                marginBottom: '10px',
+                color: '#072b4a',
+                lineHeight: 1.25,
+                marginBottom: '12px',
               }}>
-                Swim, Play & Celebrate.
+                Swim, Splash &amp; Celebrate.<br />
+                <span style={{ color: '#072b4a' }}>Your entire private place.</span>
               </h1>
 
               {/* Guest & Timing Details Grid */}
@@ -252,28 +252,28 @@ export default function TicketPage() {
                   <div className="detail-value" style={{ color: '#0284c7' }}>{ticketData.booking_date}</div>
                 </div>
                 <div>
-                  <span className="detail-label">TIME</span>
+                  <span className="detail-label">TIMING</span>
                   <div className="detail-value">9:00 AM – 6:00 PM</div>
                 </div>
                 <div>
                   <span className="detail-label">PASS</span>
-                  <div className="detail-value" style={{ color: '#15803d' }}>₹{ticketData.amount.toLocaleString()} Paid</div>
+                  <div className="detail-value" style={{ color: '#059669' }}>₹{ticketData.amount.toLocaleString()} Confirmed</div>
                 </div>
               </div>
 
               {/* Amenities Pills */}
               <div className="ticket-pills-wrap">
-                <span className="ticket-pill">Swimming Pool</span>
+                <span className="ticket-pill">Adult Pool</span>
                 <span className="ticket-pill">Waterfalls</span>
                 <span className="ticket-pill">Kids Pool</span>
                 <span className="ticket-pill">Party Hall</span>
                 <span className="ticket-pill">Garden</span>
               </div>
 
-              {/* Red Link Pill */}
+              {/* Emerald Action Pill with Phone Number */}
               <div style={{ marginTop: '12px' }}>
                 <span className="ticket-action-pill">
-                  thendraldayout.com • Panpoli, Tenkasi
+                  thendraldayout.com • 📞 {phoneNum}
                 </span>
               </div>
             </div>
@@ -311,46 +311,51 @@ export default function TicketPage() {
               {/* Barcode Graphic */}
               <div className="stub-barcode-wrap">
                 <svg viewBox="0 0 160 26" className="barcode-svg" preserveAspectRatio="none">
-                  <rect x="0" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="5" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="9" y="0" width="4" height="26" fill="#1e293b" />
-                  <rect x="15" y="0" width="1" height="26" fill="#1e293b" />
-                  <rect x="18" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="23" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="27" y="0" width="4" height="26" fill="#1e293b" />
-                  <rect x="33" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="37" y="0" width="1" height="26" fill="#1e293b" />
-                  <rect x="40" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="45" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="49" y="0" width="4" height="26" fill="#1e293b" />
-                  <rect x="55" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="59" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="64" y="0" width="1" height="26" fill="#1e293b" />
-                  <rect x="67" y="0" width="4" height="26" fill="#1e293b" />
-                  <rect x="73" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="77" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="82" y="0" width="1" height="26" fill="#1e293b" />
-                  <rect x="85" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="90" y="0" width="4" height="26" fill="#1e293b" />
-                  <rect x="96" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="100" y="0" width="1" height="26" fill="#1e293b" />
-                  <rect x="103" y="0" width="4" height="26" fill="#1e293b" />
-                  <rect x="109" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="113" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="118" y="0" width="1" height="26" fill="#1e293b" />
-                  <rect x="121" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="126" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="130" y="0" width="4" height="26" fill="#1e293b" />
-                  <rect x="136" y="0" width="1" height="26" fill="#1e293b" />
-                  <rect x="139" y="0" width="3" height="26" fill="#1e293b" />
-                  <rect x="144" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="148" y="0" width="4" height="26" fill="#1e293b" />
-                  <rect x="154" y="0" width="2" height="26" fill="#1e293b" />
-                  <rect x="158" y="0" width="2" height="26" fill="#1e293b" />
+                  <rect x="0" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="5" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="9" y="0" width="4" height="26" fill="#072b4a" />
+                  <rect x="15" y="0" width="1" height="26" fill="#072b4a" />
+                  <rect x="18" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="23" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="27" y="0" width="4" height="26" fill="#072b4a" />
+                  <rect x="33" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="37" y="0" width="1" height="26" fill="#072b4a" />
+                  <rect x="40" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="45" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="49" y="0" width="4" height="26" fill="#072b4a" />
+                  <rect x="55" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="59" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="64" y="0" width="1" height="26" fill="#072b4a" />
+                  <rect x="67" y="0" width="4" height="26" fill="#072b4a" />
+                  <rect x="73" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="77" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="82" y="0" width="1" height="26" fill="#072b4a" />
+                  <rect x="85" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="90" y="0" width="4" height="26" fill="#072b4a" />
+                  <rect x="96" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="100" y="0" width="1" height="26" fill="#072b4a" />
+                  <rect x="103" y="0" width="4" height="26" fill="#072b4a" />
+                  <rect x="109" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="113" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="118" y="0" width="1" height="26" fill="#072b4a" />
+                  <rect x="121" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="126" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="130" y="0" width="4" height="26" fill="#072b4a" />
+                  <rect x="136" y="0" width="1" height="26" fill="#072b4a" />
+                  <rect x="139" y="0" width="3" height="26" fill="#072b4a" />
+                  <rect x="144" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="148" y="0" width="4" height="26" fill="#072b4a" />
+                  <rect x="154" y="0" width="2" height="26" fill="#072b4a" />
+                  <rect x="158" y="0" width="2" height="26" fill="#072b4a" />
                 </svg>
                 <div className="barcode-number">
                   * {ticketData.booking_id} *
                 </div>
+              </div>
+
+              {/* Helpline at stub footer */}
+              <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#059669', marginTop: '4px' }}>
+                HELPDESK: {phoneNum}
               </div>
             </div>
           </div>
@@ -388,11 +393,11 @@ export default function TicketPage() {
             </a>
 
             <a
-              href="tel:8778038383"
-              style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#16a34a', fontWeight: 800, textDecoration: 'none' }}
+              href={`tel:${phoneNum}`}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#059669', fontWeight: 800, textDecoration: 'none' }}
             >
               <Phone size={16} />
-              <span>8778038383</span>
+              <span>{phoneNum}</span>
             </a>
           </div>
         </div>
@@ -401,16 +406,16 @@ export default function TicketPage() {
       {/* TICKET STYLING */}
       <style jsx>{`
         .ticket-frame {
-          background-color: #b91c1c;
+          background-color: #072b4a;
           border-radius: 24px;
           padding: 8px;
-          box-shadow: 0 16px 36px -10px rgba(185, 28, 28, 0.25), 0 8px 16px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 16px 36px -10px rgba(7, 43, 74, 0.3), 0 8px 16px rgba(0, 0, 0, 0.06);
           max-width: 880px;
           margin: 0 auto;
         }
 
         .ticket-body {
-          background-color: #fffdfa;
+          background-color: #ffffff;
           border-radius: 18px;
           display: flex;
           position: relative;
@@ -430,7 +435,7 @@ export default function TicketPage() {
           right: 12px;
           background: rgba(0, 0, 0, 0.65);
           backdrop-filter: blur(4px);
-          color: #ffffff;
+          color: #86efac;
           font-size: 0.68rem;
           font-weight: 800;
           letter-spacing: 0.05em;
@@ -467,7 +472,7 @@ export default function TicketPage() {
         .detail-value {
           font-size: 0.88rem;
           font-weight: 800;
-          color: #0f172a;
+          color: #072b4a;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -480,9 +485,9 @@ export default function TicketPage() {
         }
 
         .ticket-pill {
-          background-color: #f1f5f9;
-          border: 1px solid #e2e8f0;
-          color: #334155;
+          background-color: #f0f9ff;
+          border: 1px solid #bae6fd;
+          color: #0369a1;
           font-size: 0.72rem;
           font-weight: 700;
           padding: 3px 9px;
@@ -491,7 +496,7 @@ export default function TicketPage() {
 
         .ticket-action-pill {
           display: inline-block;
-          background-color: #b91c1c;
+          background-color: #059669;
           color: #ffffff;
           font-size: 0.78rem;
           font-weight: 800;
@@ -514,7 +519,7 @@ export default function TicketPage() {
         .ticket-notch {
           width: 24px;
           height: 12px;
-          background-color: #f1f5f9;
+          background-color: #f8fafc;
         }
 
         .notch-top {
@@ -567,21 +572,21 @@ export default function TicketPage() {
           font-family: monospace;
           font-size: 0.95rem;
           font-weight: 800;
-          color: #0f172a;
+          color: #072b4a;
         }
 
         .stub-qr-container {
           background-color: #ffffff;
           padding: 6px;
           border-radius: 10px;
-          border: 1px solid #e2e8f0;
+          border: 1.5px solid #bae6fd;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .stub-scan-caption {
           font-size: 0.62rem;
           font-weight: 700;
-          color: #64748b;
+          color: #0284c7;
           letter-spacing: 0.04em;
           text-transform: uppercase;
           margin-top: 4px;
@@ -673,7 +678,7 @@ export default function TicketPage() {
           }
           .ticket-frame {
             box-shadow: none !important;
-            border: 2px solid #b91c1c !important;
+            border: 2px solid #072b4a !important;
             max-width: 100% !important;
           }
         }

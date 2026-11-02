@@ -34,7 +34,7 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
  */
 function drawBarcode(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number) {
   ctx.save();
-  ctx.fillStyle = '#1e293b';
+  ctx.fillStyle = '#072b4a';
   const pattern = [2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1, 1, 3, 1, 2, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1];
   const totalUnits = pattern.reduce((acc, v) => acc + v, 0);
   const unitW = width / totalUnits;
@@ -103,7 +103,7 @@ function formatDate(dateStr: string): string {
 }
 
 /**
- * Generate a compact, neat horizontal event pass PNG (matching reference ticket pass)
+ * Generate a compact, neat horizontal event pass PNG (Refined Azure & Emerald Theme)
  */
 export async function generateTicketImage(params: TicketImageParams): Promise<string> {
   const width = 1100;
@@ -115,7 +115,7 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('Canvas 2D context not available');
 
-  const canvasBg = '#f1f5f9';
+  const canvasBg = '#f8fafc';
   ctx.fillStyle = canvasBg;
   ctx.fillRect(0, 0, width, height);
 
@@ -126,26 +126,26 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   const cardH = height - 40; // 440
   const cardRadius = 24;
 
-  // Outer border & card background (rich deep red accent border like reference image)
+  // Outer Frame (Deep Navy #072b4a)
   ctx.save();
-  ctx.fillStyle = '#b91c1c';
+  ctx.fillStyle = '#072b4a';
   roundRect(ctx, cardX, cardY, cardW, cardH, cardRadius);
   ctx.fill();
 
-  // Inner ticket body (inset 8px)
+  // Inner ticket body (Pure White #ffffff, inset 8px)
   const innerX = cardX + 8;
   const innerY = cardY + 8;
   const innerW = cardW - 16;
   const innerH = cardH - 16;
-  ctx.fillStyle = '#fffdfa'; // Clean warm ivory
+  ctx.fillStyle = '#ffffff';
   roundRect(ctx, innerX, innerY, innerW, innerH, cardRadius - 6);
   ctx.fill();
   ctx.restore();
 
-  // LEFT COLUMN: Real Venue Photo (Width ~260px)
-  const photoW = 260;
+  // LEFT COLUMN: Waterfall Cascade Photo (Width ~265px)
+  const photoW = 265;
   const photoH = innerH;
-  const photoImg = await loadImage('/images/pool-main.jpg');
+  const photoImg = await loadImage('/images/falls-feature.jpg');
 
   ctx.save();
   roundRect(ctx, innerX, innerY, photoW, photoH, { tl: cardRadius - 6, tr: 0, br: 0, bl: cardRadius - 6 });
@@ -154,13 +154,13 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
     ctx.drawImage(photoImg, innerX, innerY, photoW, photoH);
   } else {
     const pGrad = ctx.createLinearGradient(innerX, innerY, innerX + photoW, innerY + photoH);
-    pGrad.addColorStop(0, '#0284c7');
-    pGrad.addColorStop(1, '#0c4a6e');
+    pGrad.addColorStop(0, '#072b4a');
+    pGrad.addColorStop(1, '#0284c7');
     ctx.fillStyle = pGrad;
     ctx.fillRect(innerX, innerY, photoW, photoH);
   }
 
-  // Dark gradient overlay on photo bottom
+  // Dark gradient overlay at photo bottom
   const photoOverlay = ctx.createLinearGradient(innerX, innerY + photoH - 100, innerX, innerY + photoH);
   photoOverlay.addColorStop(0, 'rgba(0,0,0,0)');
   photoOverlay.addColorStop(1, 'rgba(0,0,0,0.7)');
@@ -168,9 +168,9 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   ctx.fillRect(innerX, innerY, photoW, photoH);
 
   // Photo bottom tag
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = '#86efac';
   ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('100% PRIVATE VENUE', innerX + 16, innerY + photoH - 18);
+  ctx.fillText('WATERFALL & POOL VENUE', innerX + 16, innerY + photoH - 18);
   ctx.restore();
 
   // PERFORATION & NOTCH CUTOUTS (Separating Center and Right Stub)
@@ -193,7 +193,7 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   ctx.fill();
 
   // Vertical dashed perforation line
-  ctx.strokeStyle = '#d1d5db';
+  ctx.strokeStyle = '#cbd5e1';
   ctx.lineWidth = 2;
   ctx.setLineDash([6, 6]);
   ctx.beginPath();
@@ -205,43 +205,44 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   // CENTER SECTION: Ticket Content
   const centerX = innerX + photoW + 28;
 
-  // Brand Row: Logo + THENDRAL DAY OUT
+  // Brand Row: Logo (44x44) + THENDRAL DAY OUT
   const logoImg = await loadImage('/images/logo.png');
   const logoY = innerY + 22;
   if (logoImg) {
-    ctx.drawImage(logoImg, centerX, logoY, 38, 38);
+    ctx.drawImage(logoImg, centerX, logoY, 42, 42);
   }
 
-  const brandTextX = centerX + 48;
-  ctx.fillStyle = '#0f172a';
-  ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
+  const brandTextX = centerX + 54;
+  ctx.fillStyle = '#072b4a';
+  ctx.font = 'bold 21px "Plus Jakarta Sans", "Outfit", sans-serif';
   ctx.fillText('THENDRAL DAY OUT', brandTextX, logoY + 22);
 
-  ctx.fillStyle = '#16a34a';
+  ctx.fillStyle = '#059669';
   ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('BY THENDRAL GROUPS', brandTextX, logoY + 36);
+  ctx.fillText('BY THENDRAL GROUPS • PANPOLI', brandTextX, logoY + 37);
 
   // Kicker
-  const kickerY = logoY + 66;
-  ctx.fillStyle = '#64748b';
+  const kickerY = logoY + 68;
+  ctx.fillStyle = '#0284c7';
   ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
   ctx.fillText('EXCLUSIVE FULL-DAY PRIVATE PASS', centerX, kickerY);
 
-  // Headline
-  const headlineY = kickerY + 32;
-  ctx.fillStyle = '#0f172a';
-  ctx.font = '800 30px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('Swim, Play & Celebrate.', centerX, headlineY);
+  // Refined Headline with Reduced Font Size (21px - clean and balanced)
+  const headlineY = kickerY + 30;
+  ctx.fillStyle = '#072b4a';
+  ctx.font = '800 22px "Plus Jakarta Sans", "Outfit", sans-serif';
+  ctx.fillText('Swim, Splash & Celebrate.', centerX, headlineY);
+  ctx.fillText('Your entire private place.', centerX, headlineY + 26);
 
-  // Guest details line
-  const detailsY = headlineY + 44;
+  // Booking Details Meta Row
+  const detailsY = headlineY + 54;
   ctx.font = 'bold 13px "Plus Jakarta Sans", sans-serif';
 
   // Guest Name
   ctx.fillStyle = '#64748b';
   ctx.fillText('GUEST: ', centerX, detailsY);
   const guestLabelW = ctx.measureText('GUEST: ').width;
-  ctx.fillStyle = '#0f172a';
+  ctx.fillStyle = '#072b4a';
   ctx.fillText(params.customerName, centerX + guestLabelW, detailsY);
 
   // Date
@@ -249,26 +250,26 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   ctx.fillStyle = '#64748b';
   ctx.fillText('DATE: ', dateX, detailsY);
   const dateLabelW = ctx.measureText('DATE: ').width;
-  ctx.fillStyle = '#0f172a';
+  ctx.fillStyle = '#072b4a';
   ctx.fillText(formatDate(params.bookingDate), dateX + dateLabelW, detailsY);
 
   // Timing & Pass Status
-  const line2Y = detailsY + 26;
+  const line2Y = detailsY + 24;
   ctx.fillStyle = '#64748b';
   ctx.fillText('TIME: ', centerX, line2Y);
   const timeLabelW = ctx.measureText('TIME: ').width;
-  ctx.fillStyle = '#0f172a';
+  ctx.fillStyle = '#072b4a';
   ctx.fillText('09:00 AM – 06:00 PM', centerX + timeLabelW, line2Y);
 
   ctx.fillStyle = '#64748b';
   ctx.fillText('PASS: ', dateX, line2Y);
   const passLabelW = ctx.measureText('PASS: ').width;
-  ctx.fillStyle = '#15803d';
-  ctx.fillText(`₹${params.amount.toLocaleString()} Paid (Confirmed)`, dateX + passLabelW, line2Y);
+  ctx.fillStyle = '#059669';
+  ctx.fillText(`₹${params.amount.toLocaleString()} Confirmed`, dateX + passLabelW, line2Y);
 
   // Feature Pills
-  const pillsY = line2Y + 36;
-  const pills = ['Swimming Pool', 'Waterfalls', 'Kids Pool', 'Party Hall', 'Garden'];
+  const pillsY = line2Y + 34;
+  const pills = ['Adult Pool', 'Waterfalls', 'Kids Pool', 'Party Hall', 'Garden'];
   let curPillX = centerX;
   ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
 
@@ -278,33 +279,34 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
     const pillH = 24;
 
     ctx.save();
-    ctx.fillStyle = '#f1f5f9';
+    ctx.fillStyle = '#f0f9ff';
     roundRect(ctx, curPillX, pillsY, pillW, pillH, 12);
     ctx.fill();
-    ctx.strokeStyle = '#e2e8f0';
+    ctx.strokeStyle = '#bae6fd';
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    ctx.fillStyle = '#334155';
+    ctx.fillStyle = '#0369a1';
     ctx.fillText(p, curPillX + 9, pillsY + 16);
     ctx.restore();
 
     curPillX += pillW + 8;
   });
 
-  // Red URL Pill
-  const actionPillY = pillsY + 44;
-  const actionText = 'thendraldayout.com • Panpoli, Tenkasi';
-  ctx.font = 'bold 13px "Plus Jakarta Sans", sans-serif';
+  // Emerald Action Pill with Phone Number
+  const actionPillY = pillsY + 40;
+  const phoneVal = params.phone || '8778038383';
+  const actionText = `thendraldayout.com • 📞 ${phoneVal}`;
+  ctx.font = 'bold 13.5px "Plus Jakarta Sans", sans-serif';
   const actionW = ctx.measureText(actionText).width + 36;
-  const actionH = 36;
+  const actionH = 38;
 
   ctx.save();
-  ctx.fillStyle = '#b91c1c';
-  roundRect(ctx, centerX, actionPillY, actionW, actionH, 18);
+  ctx.fillStyle = '#059669';
+  roundRect(ctx, centerX, actionPillY, actionW, actionH, 19);
   ctx.fill();
   ctx.fillStyle = '#ffffff';
-  ctx.fillText(actionText, centerX + 18, actionPillY + 23);
+  ctx.fillText(actionText, centerX + 18, actionPillY + 24);
   ctx.restore();
 
   // RIGHT STUB: Ticket Pass Tear-Off
@@ -316,8 +318,8 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
   ctx.fillText('ENTRY PASS', stubCenterX, innerY + 34);
 
-  ctx.fillStyle = '#0f172a';
-  ctx.font = '800 16px monospace';
+  ctx.fillStyle = '#072b4a';
+  ctx.font = '800 17px monospace';
   ctx.fillText(`No. ${params.bookingId}`, stubCenterX, innerY + 56);
 
   // Generate QR Code data URL if not provided
@@ -328,7 +330,7 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
       qrDataUrl = await QRCode.toDataURL(verifyTarget, {
         margin: 1,
         width: 150,
-        color: { dark: '#0f172a', light: '#ffffff' },
+        color: { dark: '#072b4a', light: '#ffffff' },
       });
     } catch {
       // ignore
@@ -336,9 +338,9 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
   }
 
   // Draw QR code
-  const qrSize = 145;
+  const qrSize = 140;
   const qrX = stubCenterX - (qrSize / 2);
-  const qrY = innerY + 76;
+  const qrY = innerY + 74;
 
   if (qrDataUrl) {
     const qrImg = await loadImage(qrDataUrl);
@@ -347,8 +349,8 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
       ctx.fillStyle = '#ffffff';
       roundRect(ctx, qrX - 6, qrY - 6, qrSize + 12, qrSize + 12, 12);
       ctx.fill();
-      ctx.strokeStyle = '#e2e8f0';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#bae6fd';
+      ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
       ctx.restore();
@@ -357,21 +359,26 @@ export async function generateTicketImage(params: TicketImageParams): Promise<st
 
   // "SCAN AT THE GATE"
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#64748b';
+  ctx.fillStyle = '#0284c7';
   ctx.font = 'bold 10px "Plus Jakarta Sans", sans-serif';
   ctx.fillText('SCAN AT THE GATE', stubCenterX, qrY + qrSize + 22);
 
   // Barcode Graphic & Booking ID underneath
   const barcodeY = qrY + qrSize + 36;
   const barcodeW = 160;
-  const barcodeH = 30;
+  const barcodeH = 28;
   const barcodeX = stubCenterX - (barcodeW / 2);
 
   drawBarcode(ctx, barcodeX, barcodeY, barcodeW, barcodeH);
 
   ctx.fillStyle = '#94a3b8';
   ctx.font = '10px monospace';
-  ctx.fillText(`* ${params.bookingId} *`, stubCenterX, barcodeY + barcodeH + 14);
+  ctx.fillText(`* ${params.bookingId} *`, stubCenterX, barcodeY + barcodeH + 13);
+
+  // Helpline at bottom of stub
+  ctx.fillStyle = '#059669';
+  ctx.font = 'bold 9.5px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText(`HELPDESK: ${phoneVal}`, stubCenterX, barcodeY + barcodeH + 28);
 
   return canvas.toDataURL('image/png');
 }
